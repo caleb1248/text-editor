@@ -1,0 +1,94 @@
+:root {
+  box-sizing: border-box;
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #121212;
+    --color-foreground: #ffffff;
+  }
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+#app,
+#main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+#editor {
+  height: 100%;
+}
+
+#menubar-container {
+  border-bottom: 1px solid #00000011;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+}
+#menubar,
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: flex;
+}
+
+#menubar:focus-within > li:hover > .submenu {
+  display: flex !important;
+}
+#menubar {
+  position: relative;
+  user-select: none;
+  gap: 4px;
+}
+
+#menubar > li > span {
+  padding: 8px 12px;
+  border-radius: 1000px;
+}
+
+#menubar > li:hover > span {
+  background-color: #7f7f7f22;
+}
+
+.submenu {
+  padding: 10px;
+  min-width: 200px;
+  position: absolute;
+  z-index: 999;
+  top: 100%;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 8px #00000022;
+  background-color: var(--color-background);
+}
+.submenu > li > button {
+  font-size: 1rem;
+  text-align: left;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+.submenu > li > button:hover {
+  background-color: #7f7f7f22;
+}

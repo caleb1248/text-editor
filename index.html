@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>text-editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>
+  </head>
+  <body>
+    <div id="app">
+      <nav id="menubar-container">
+        <ul role="menubar" id="menubar">
+          <li tabindex="1">
+            <span>File</span>
+            <ul class="submenu" role="menu">
+              <li tabindex="1"><button data-onclick="files.new">New File</button></li>
+              <li tabindex="1"><button data-onclick="files.open">Open File</button></li>
+              <li tabindex="1"><button data-onclick="files.save">Save File</button></li>
+              <li tabindex="1"><button data-onclick="files.saveAs">Save As...</button></li>
+            </ul>
+          </li>
+          <li tabindex="1"><span>Edit</span></li>
+        </ul>
+      </nav>
+      <div id="main">
+        <div id="tabs"></div>
+        <div id="editor-container">
+          <div id="editor"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
