@@ -26,7 +26,11 @@ body,
 #app,
 #main {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: min-content minmax(0, 1fr);
+}
+
+#main {
+  min-height: 0;
 }
 
 #editor {
@@ -34,8 +38,8 @@ body,
 }
 
 #menubar-container {
-  border-bottom: 1px solid #00000011;
-  padding: 6px 8px;
+  border-bottom: 1px solid #7f7f7f55;
+  padding: 5px 0;
   display: flex;
   align-items: center;
 }
@@ -77,6 +81,7 @@ body,
   gap: 6px;
   box-shadow: 0 4px 8px #00000022;
   background-color: var(--color-background);
+  border-radius: 16px;
 }
 .submenu > li > button {
   font-size: 1rem;
@@ -89,6 +94,45 @@ body,
   width: 100%;
   cursor: pointer;
 }
+
 .submenu > li > button:hover {
+  background-color: #7f7f7f22;
+}
+
+#tabs {
+  padding: 8px 8px 0 8px;
+  display: flex;
+  background-color: var(--color-background);
+  border-top: 1px solid #7f7f7f22;
+}
+
+.tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+.tab:hover,
+.tab.active {
+  background-color: #7f7f7f22;
+}
+
+.tab > button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9999px;
+}
+
+.tab > button:hover {
   background-color: #7f7f7f22;
 }

@@ -66,6 +66,7 @@ function updateTheme(theme: any) {
       },
     })),
   };
+
   convertedTheme.settings.unshift({
     scope: '',
     settings: {
