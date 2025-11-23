@@ -1,5 +1,5 @@
-import './typescript/contribution';
-import './javascript/contribution';
-import './python/contribution';
-import './html/contribution';
-import './css/contribution';
+import './typescript-basics/package.json?manifest';
+import './javascript/package.json?manifest';
+import './python/package.json?manifest';
+import './html/package.json?manifest';
+import './css/package.json?manifest';

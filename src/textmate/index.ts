@@ -27,6 +27,7 @@ const registry = new vsctm.Registry({
       createOnigString: (str) => new OnigString(str),
     };
   }),
+
   loadGrammar(scopeName) {
     console.log('loadGrammar', scopeName);
     function fetchGrammar(path: string) {

@@ -9,7 +9,8 @@ import './workers';
 import './textmate/themes/tm-theme-support';
 // textmate integration
 import { registerHandlers } from './files';
-
+const manifest = await import('./languages/typescript-basics/package.json?manifest');
+console.log(manifest);
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
 
