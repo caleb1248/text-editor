@@ -65,9 +65,7 @@ async function saveFile(editor: monaco.editor.IStandaloneCodeEditor) {
 async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
   const model = editor.getModel();
 
-  if (!model) {
-    return;
-  }
+  if (!model) return;
 
   const options: SaveFilePickerOptions = {
     suggestedName:
@@ -84,9 +82,19 @@ async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
   const correspondingTab = tabs.findIndex((tab) => tab.model === model);
   if (correspondingTab === -1) return;
 
+  const newModel = monaco.editor.createModel(
+    model.getValue(),
+    getLanguageFromExtension(fileHandle.name),
+    monaco.Uri.parse(`file:///file-${fileIdCounter++}-${fileHandle.name}`)
+  );
+
   tabs[correspondingTab].handle = fileHandle;
   tabs[correspondingTab].displayName = fileHandle.name;
-  uriToFileMap.set(model.uri.toString(), fileHandle);
+  tabs[correspondingTab].model = newModel;
+
+  editor.setModel(newModel);
+  model.dispose();
+  uriToFileMap.set(newModel.uri.toString(), fileHandle);
 }
 
 export function registerHandlers(editor: monaco.editor.IStandaloneCodeEditor) {
