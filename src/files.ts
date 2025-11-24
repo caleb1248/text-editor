@@ -1,7 +1,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { clickTarget, keyboardTarget, registerEvent } from './events';
+import { tabs, Tab, activeTab } from './tabs';
 
-const fileToModelMap = new Map<FileSystemFileHandle, { displayName: string; uri: monaco.Uri }>();
 const uriToFileMap = new Map<string, FileSystemFileHandle>();
 
 let fileIdCounter = 0;
@@ -9,16 +9,27 @@ let fileIdCounter = 0;
 async function openFile(editor: monaco.editor.IStandaloneCodeEditor) {
   const [fileHandle] = await window.showOpenFilePicker();
 
+  for (const tab of tabs) {
+    const isSameEntry = await tab.handle?.isSameEntry(fileHandle);
+    // console.log('issameentry', isSameEntry);
+    if (isSameEntry) {
+      alert('This file is already opened.');
+      return;
+    }
+  }
+
   const file = await fileHandle.getFile();
   const text = await file.text();
+
   const model = monaco.editor.createModel(
     text,
     getLanguageFromExtension(fileHandle.name),
     monaco.Uri.parse(`file:///file-${fileIdCounter++}-${fileHandle.name}`)
   );
 
-  fileToModelMap.set(fileHandle, { displayName: fileHandle.name, uri: model.uri });
   uriToFileMap.set(model.uri.toString(), fileHandle);
+  const newTab = new Tab(editor, model, fileHandle);
+  newTab.insert(activeTab.current !== null ? activeTab.current + 1 : 0);
   editor.setModel(model);
   return model;
 }
@@ -41,6 +52,7 @@ async function saveFile(editor: monaco.editor.IStandaloneCodeEditor) {
 
 async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
   const model = editor.getModel();
+
   if (!model) {
     return;
   }
@@ -54,7 +66,11 @@ async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
   await writable.write(model.getValue());
   await writable.close();
 
-  fileToModelMap.set(fileHandle, { displayName: fileHandle.name, uri: model.uri });
+  const correspondingTab = tabs.findIndex((tab) => tab.model === model);
+  if (correspondingTab === -1) return;
+
+  tabs[correspondingTab].handle = fileHandle;
+  tabs[correspondingTab].displayName = fileHandle.name;
   uriToFileMap.set(model.uri.toString(), fileHandle);
 }
 

@@ -2,28 +2,66 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 const tabsElement = document.getElementById('tabs')!;
 
-const closeButton = document.createElement('button');
-closeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e3e3e3">
-  <path d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"/>
-</svg>`;
-closeButton.className = 'close-btn';
+const tabTemplate = document.createElement('li');
+tabTemplate.className = 'tab';
+tabTemplate.innerHTML = `<span> </span>
+<button class="close-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e3e3e3">
+    <path d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"/>
+  </svg>
+</button>
+`;
 
 export const tabs: Tab[] = [];
-export let activeTab: number | null = null;
+
+export const activeTab = {
+  get current() {
+    return _activeTab;
+  },
+
+  set current(index: number | null) {
+    if (_activeTab !== null && tabs[_activeTab]) {
+      tabs[_activeTab].setActive(false);
+    }
+    _activeTab = index;
+    if (_activeTab !== null && tabs[_activeTab]) {
+      tabs[_activeTab].setActive(true);
+    }
+  },
+};
+
+let _activeTab: number | null = null;
 
 export class Tab {
   private _element: HTMLElement;
+  private _displayName: string;
   constructor(
     private _editor: monaco.editor.IStandaloneCodeEditor,
     public model: monaco.editor.ITextModel,
-    public name: string
+    public handle?: FileSystemFileHandle
   ) {
-    this._element = Tab.createElement(name, this._onClick.bind(this), this.close.bind(this));
+    this._element = tabTemplate.cloneNode(true) as HTMLElement;
+
+    const spanElement = this._element.firstChild!;
+    spanElement.firstChild!.nodeValue = this._displayName =
+      handle?.name || model.uri.path.split('/').pop() || 'untitled';
+
+    const closeButton = spanElement.nextSibling?.nextSibling;
+    closeButton?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.close();
+    });
+
+    this._element.addEventListener('click', this._onClick.bind(this));
   }
 
-  public updateName(newName: string) {
-    this.name = newName;
-    this._element.firstChild!.textContent = newName;
+  public get displayName() {
+    return this._displayName;
+  }
+
+  public set displayName(name: string) {
+    this._displayName = name;
+    this._element.firstChild!.firstChild!.nodeValue = name;
   }
 
   // Closes the tab
@@ -33,13 +71,15 @@ export class Tab {
   public close() {
     const currentIndex = tabs.indexOf(this);
     tabs.splice(currentIndex, 1);
-    if (this._editor.getModel() === this.model) {
+    if (activeTab.current === currentIndex) {
       if (tabs.length === 0) {
         this._editor.setModel(null);
+        activeTab.current = null;
       } else {
-        const nextTab = tabs[currentIndex] || tabs[currentIndex - 1];
-        this._editor.setModel(nextTab.model);
+        activeTab.current = Math.min(currentIndex, tabs.length - 1);
       }
+    } else if (activeTab.current! > currentIndex) {
+      activeTab.current!--;
     }
 
     tabsElement.removeChild(this._element);
@@ -64,35 +104,9 @@ export class Tab {
   setActive(isActive: boolean) {
     if (isActive) {
       this._element.classList.add('active');
+      this._editor.setModel(this.model);
     } else {
       this._element.classList.remove('active');
     }
-
-    return isActive;
-  }
-
-  private static createElement(
-    name: string,
-    onClick: () => void,
-    onClose: () => void
-  ): HTMLElement {
-    const tabElement = document.createElement('div');
-    tabElement.className = 'tab';
-
-    const titleElement = document.createElement('span');
-    titleElement.innerText = name;
-    tabElement.appendChild(titleElement);
-
-    const closeBtn = tabElement.appendChild(closeButton.cloneNode(true) as HTMLElement);
-    closeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      onClose();
-    });
-
-    tabElement.addEventListener('click', () => {
-      onClick();
-    });
-
-    return tabElement;
   }
 }

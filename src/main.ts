@@ -3,7 +3,7 @@ import 'monaco-editor/esm/vs/editor/edcore.main';
 import './languages/main';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-es';
-import { tabs, Tab } from './tabs';
+import { tabs, Tab, activeTab } from './tabs';
 import './workers';
 // monaco
 import './textmate/themes/tm-theme-support';
@@ -29,7 +29,9 @@ monaco.editor.registerEditorOpener({
   },
 });
 
-window.addEventListener('resize', () => editor.layout());
+window.addEventListener('resize', () => {
+  editor.layout();
+});
 editor.onDidChangeModel((e) => {
   const newUri = e.newModelUrl;
   if (!newUri) {
@@ -41,20 +43,24 @@ editor.onDidChangeModel((e) => {
 
   let found = false;
 
-  for (const tab of tabs) {
-    if (tab.setActive(tab.model.uri.toString() === newUri.toString())) {
+  for (let i = 0; i < tabs.length; i++) {
+    if (tabs[i].model.uri.toString() === newUri.toString()) {
+      activeTab.current = i;
       found = true;
+      break;
     }
   }
 
   if (!found) {
     const model = monaco.editor.getModel(newUri);
     if (model) {
-      const newTab = new Tab(editor, model, newUri.path.split('/').pop() || 'untitled');
-      newTab.insert(tabs.length);
-      newTab.setActive(true);
+      const newTab = new Tab(editor, model);
+      const targetIndex = (activeTab.current ?? -1) + 1;
+      newTab.insert(targetIndex);
+      activeTab.current = targetIndex;
     }
   }
+
   editor.layout();
 });
 
@@ -74,6 +80,7 @@ declare global {
 globalThis.editor = editor;
 
 registerHandlers(editor);
+
 monaco.languages.onLanguageEncountered('html', () => {
   emmetHTML(monaco);
 });
