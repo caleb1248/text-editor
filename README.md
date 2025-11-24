@@ -11,11 +11,11 @@ ChromeOS is ending support for Chrome apps, which includes Caret, a popular text
 - Better syntax highlighting.
 - Intellisense for HTML, CSS, JavaScript, and Typescript.
 - Support for opening and saving files using the File System Access API.
+- Editor tabs
+- File creation
 
 ## Features not implemented yet
 
-- Editor tabs
-- Support for file creation
 - Syntax highlighting for more languages
 - Custom language support
 - Custom themes

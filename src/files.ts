@@ -5,6 +5,20 @@ import { tabs, Tab, activeTab } from './tabs';
 const uriToFileMap = new Map<string, FileSystemFileHandle>();
 
 let fileIdCounter = 0;
+let untitledCounter = 1;
+
+async function newFile(editor: monaco.editor.IStandaloneCodeEditor) {
+  const model = monaco.editor.createModel(
+    '',
+    'plaintext',
+    monaco.Uri.parse(`file:///file-${fileIdCounter++}-untitled.txt`)
+  );
+  const newTab = new Tab(editor, model);
+  newTab.displayName = `Untitled-${untitledCounter++}`;
+  newTab.insert(activeTab.current !== null ? activeTab.current + 1 : 0);
+  editor.setModel(model);
+  return model;
+}
 
 async function openFile(editor: monaco.editor.IStandaloneCodeEditor) {
   const [fileHandle] = await window.showOpenFilePicker();
@@ -39,6 +53,7 @@ async function saveFile(editor: monaco.editor.IStandaloneCodeEditor) {
 
   const fileHandle = uriToFileMap.get(model.uri.toString());
   if (!fileHandle) {
+    saveFileAs(editor);
     return;
   }
 
@@ -55,7 +70,10 @@ async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
   }
 
   const options: SaveFilePickerOptions = {
-    suggestedName: model.uri.path.split('/').pop() || 'untitled',
+    suggestedName:
+      tabs.find((tab) => tab.model === model)?.displayName ||
+      model.uri.path.split('/').pop() ||
+      'untitled',
   };
 
   const fileHandle = await window.showSaveFilePicker(options);
@@ -72,6 +90,10 @@ async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
 }
 
 export function registerHandlers(editor: monaco.editor.IStandaloneCodeEditor) {
+  registerEvent(newFile.bind(null, editor), [
+    keyboardTarget('n', { ctrl: true }),
+    clickTarget('files.new'),
+  ]);
   registerEvent(openFile.bind(null, editor), [
     keyboardTarget('o', { ctrl: true }),
     clickTarget('files.open'),
