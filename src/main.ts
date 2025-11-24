@@ -80,6 +80,11 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.ESNext,
 });
 
+monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  allowComments: true,
+  validate: true,
+});
+
 declare global {
   var editor: monaco.editor.IStandaloneCodeEditor;
 }
