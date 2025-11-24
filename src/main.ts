@@ -6,13 +6,16 @@ import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-es';
 import { tabs, Tab, activeTab } from './tabs';
 import './workers';
 // monaco
-import './textmate/themes/tm-theme-support';
+import './theme-support/tm-theme-support';
+import './theme-support/theming';
 // textmate integration
 import { registerHandlers } from './files';
-const manifest = await import('./languages/typescript-basics/package.json?manifest');
-console.log(manifest);
+
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
+
+const welcomeEl = document.getElementById('welcome')!;
+welcomeEl.style.display = 'block';
 
 const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
 const editor = monaco.editor.create(document.getElementById('editor')!, {
@@ -35,11 +38,15 @@ window.addEventListener('resize', () => {
 editor.onDidChangeModel((e) => {
   const newUri = e.newModelUrl;
   if (!newUri) {
-    document.getElementById('main')!.style.display = 'none';
+    mainEl.style.display = 'none';
+    welcomeEl.parentElement!.insertBefore(mainEl, welcomeEl);
+    welcomeEl.style.display = 'block';
     return;
   }
 
   mainEl.style.display = 'block';
+  welcomeEl.style.display = 'none';
+  mainEl.parentElement!.insertBefore(welcomeEl, mainEl);
 
   let found = false;
 

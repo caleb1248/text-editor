@@ -1,6 +1,6 @@
 :root {
   box-sizing: border-box;
-  --color-background: #ffffff;
+  --color-background: #f8f8f8;
   --color-foreground: #000000;
 }
 
@@ -38,12 +38,19 @@ body,
   height: 100%;
 }
 
+#welcome {
+  background-color: var(--color-editor-background);
+}
+
 #menubar-container {
-  border-bottom: 1px solid #7f7f7f55;
+  border-bottom: 1px solid #7f7f7f22;
   padding: 5px 0;
   display: flex;
   align-items: center;
+  background-color: var(--color-titleBar-activeBackground);
+  color: var(--color-titleBar-activeForeground);
 }
+
 #menubar,
 .submenu {
   list-style: none;
@@ -55,6 +62,7 @@ body,
 #menubar:focus-within > li:hover > .submenu {
   display: flex !important;
 }
+
 #menubar {
   position: relative;
   user-select: none;
@@ -67,30 +75,32 @@ body,
 }
 
 #menubar > li:hover > span {
-  background-color: #7f7f7f22;
+  background-color: #7f7f7f55;
 }
 
 .submenu {
   padding: 10px;
   min-width: 200px;
   position: absolute;
-  z-index: 999;
+  z-index: 9999;
   top: 100%;
   left: 0;
   display: none;
   flex-direction: column;
   gap: 6px;
   box-shadow: 0 4px 8px #00000022;
-  background-color: var(--color-background);
+  background-color: var(--color-menu-background);
+  color: var(--color-menu-foreground);
   border-radius: 16px;
 }
+
 .submenu > li > button {
   font-size: 1rem;
   text-align: left;
   padding: 8px 14px;
   border-radius: 100px;
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: inherit;
+  color: inherit;
   border: none;
   width: 100%;
   cursor: pointer;
@@ -105,8 +115,7 @@ body,
   overflow-x: auto;
   display: flex;
   gap: 8px;
-  background-color: var(--color-background);
-  border-top: 1px solid #7f7f7f22;
+  background-color: var(--color-editorGroupHeader-tabsBackground);
   list-style-type: none;
   margin: 0;
 }
@@ -120,11 +129,17 @@ body,
   align-items: center;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
+  background-color: transparent;
+  color: var(--color-tab-inactiveForeground);
 }
 
-.tab:hover,
+.tab:hover:not(.active) {
+  background-color: var(--color-tab-hoverBackground);
+}
+
 .tab.active {
-  background-color: #7f7f7f22;
+  background-color: var(--color-tab-activeBackground);
+  color: var(--color-tab-activeForeground);
 }
 
 .tab > button {
@@ -140,4 +155,11 @@ body,
 
 .tab > button:hover {
   background-color: #7f7f7f22;
+}
+.tab svg {
+  fill: var(--color-tab-inactiveForeground);
+}
+
+.tab.active svg {
+  fill: var(--color-tab-activeForeground);
 }

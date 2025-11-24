@@ -11,11 +11,8 @@ async function openFile(editor: monaco.editor.IStandaloneCodeEditor) {
 
   for (const tab of tabs) {
     const isSameEntry = await tab.handle?.isSameEntry(fileHandle);
-    // console.log('issameentry', isSameEntry);
-    if (isSameEntry) {
-      alert('This file is already opened.');
-      return;
-    }
+    editor.setModel(tab.model);
+    if (isSameEntry) return;
   }
 
   const file = await fileHandle.getFile();
