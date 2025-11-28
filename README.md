@@ -26,3 +26,16 @@ ChromeOS is ending support for Chrome apps, which includes Caret, a popular text
 
 - Although the editor looks similar to the VS Code editor, ~~it does not support extensions~~ it does support extensions, but only language definitions and syntax highlighting are supported, and extensions can only be added internally by adding to the source. As of now, there is no way to add extensions through the UI.
 - As this editor is intended to serve as a Caret replacement, support for Firefox and Safari is not planned.
+
+## Development
+
+- Make sure you have [`bun`](https://bun.com) installed
+- Clone the repo
+- Compile the workers and language extensions
+
+```bash
+bun run compile-workers
+bun run compile-extensions
+```
+
+- Run `bun run dev` to start the development server

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && bun run compile-workers && bun run compile-extensions && vite build",
     "preview": "vite preview",
     "compile-workers": "bun scripts/compile-workers.ts",
     "compile-extensions": "bun scripts/compile-extensions.ts"
