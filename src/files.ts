@@ -1,6 +1,7 @@
 import * as monaco from 'monaco-editor-core';
 import { clickTarget, keyboardTarget, registerEvent } from './events';
 import { tabs, Tab, activeTab } from './ui/tabs';
+import match from 'picomatch/posix';
 
 const uriToFileMap = new Map<string, FileSystemFileHandle>();
 
@@ -115,16 +116,36 @@ export function registerHandlers(editor: monaco.editor.IStandaloneCodeEditor) {
   registerEvent(saveFileAs.bind(null, editor), [clickTarget('files.saveAs')]);
 }
 
-function getLanguageFromExtension(path: string): string {
-  const lastDot = path.lastIndexOf('.');
-  if (lastDot === -1) {
-    return 'plaintext';
+function getLanguageFromExtension(fileName: string): string {
+  const languages = monaco.languages.getLanguages();
+
+  // Match by filenames property first
+  for (const language of languages) {
+    if (language.filenames?.includes(fileName)) return language.id;
   }
-  const extension = path.slice(lastDot);
-  for (const lang of monaco.languages.getLanguages()) {
-    if (lang.extensions && lang.extensions.includes(extension)) {
+
+  // Then match by filenamePatterns
+  for (const language of languages) {
+    if (!language.filenamePatterns) continue;
+
+    for (const pattern of language.filenamePatterns) {
+      if (match(pattern)(fileName)) {
+        return language.id;
+      }
+    }
+  }
+
+  // Try matching by file extension
+  const lastDot = fileName.lastIndexOf('.');
+  if (lastDot === -1) return 'plaintext';
+
+  const extension = fileName.slice(lastDot);
+  for (const lang of languages) {
+    if (lang.extensions?.includes(extension)) {
       return lang.id;
     }
   }
+
+  // Default to plaintext if no matching language is found
   return 'plaintext';
 }
