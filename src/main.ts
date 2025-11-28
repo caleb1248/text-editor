@@ -4,7 +4,7 @@ import { tabs, Tab, activeTab } from './ui/tabs';
 // monaco
 import './workers';
 import * as monaco from 'monaco-editor-core';
-import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-es';
+import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-core-es';
 
 // Theme support
 import './theme-support/tm-theme-support';
@@ -26,7 +26,10 @@ mainEl.style.display = 'none';
 const welcomeEl = document.getElementById('welcome')!;
 welcomeEl.style.display = 'block';
 
-const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
+const theme = matchMedia('(prefers-color-scheme: dark)').matches
+  ? 'dark-plus'
+  : 'light-plus';
+
 const editor = monaco.editor.create(document.getElementById('editor')!, {
   theme,
 });
@@ -44,6 +47,7 @@ monaco.editor.registerEditorOpener({
 window.addEventListener('resize', () => {
   editor.layout();
 });
+
 editor.onDidChangeModel((e) => {
   const newUri = e.newModelUrl;
   if (!newUri) {
