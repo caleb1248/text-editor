@@ -1,6 +1,6 @@
 # text-editor
 
-A PWA alternative to Caret.
+A PWA alternative to Caret-T.
 
 ## Why?
 
@@ -9,7 +9,7 @@ ChromeOS is ending support for Chrome apps, which includes Caret, a popular text
 ## Features
 
 - Better syntax highlighting.
-- Intellisense for HTML, CSS, JavaScript, and Typescript.
+- Enhanced intellisense for HTML, CSS, JavaScript, and Typescript.
 - Support for opening and saving files using the File System Access API.
 - Editor tabs
 - File creation
