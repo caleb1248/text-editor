@@ -22,7 +22,9 @@ export class WorkerManager {
   ) {
     this._worker = null;
     this._client = null;
-    this._configChangeListener = this._defaults.onDidChange(() => this._stopWorker());
+    this._configChangeListener = this._defaults.onDidChange(() =>
+      this._stopWorker()
+    );
     this._updateExtraLibsToken = 0;
     this._extraLibsChangeListener = this._defaults.onDidExtraLibsChange(() =>
       this._updateExtraLibs()
@@ -62,11 +64,6 @@ export class WorkerManager {
         this._worker = createWebWorker<TypeScriptWorker>({
           // module that exports the create() method and returns a `TypeScriptWorker` instance
           moduleId: 'vs/language/typescript/tsWorker',
-          createWorker: () =>
-            new Worker(new URL('./ts.worker', import.meta.url), {
-              type: 'module',
-            }),
-
           label: this._modeId,
 
           keepIdleModels: true,
@@ -96,7 +93,9 @@ export class WorkerManager {
     return this._client;
   }
 
-  async getLanguageServiceWorker(...resources: Uri[]): Promise<TypeScriptWorker> {
+  async getLanguageServiceWorker(
+    ...resources: Uri[]
+  ): Promise<TypeScriptWorker> {
     const client = await this._getClient();
     if (this._worker) {
       await this._worker.withSyncedResources(resources);

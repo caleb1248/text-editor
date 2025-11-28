@@ -4,7 +4,7 @@ A PWA alternative to Caret.
 
 ## Why?
 
-ChromeOS is ending support for Chrome apps, which includes Caret, a popular text editor for developers using ChromeOS. This project aims to provide a supported alternative with improvements.
+ChromeOS is ending support for Chrome apps, which includes Caret, a popular text editor for ChromeOS. This project aims to provide a supported alternative with improvements.
 
 ## Features
 

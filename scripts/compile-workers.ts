@@ -5,7 +5,7 @@ const languageFeatureBasePath = join(
   '../src/language-support/language-features'
 );
 
-const outDir = join(__dirname, '../src/workers');
+const outDir = join(__dirname, '../public/workers');
 
 if (await exists(outDir)) await rm(outDir, { recursive: true });
 await mkdir(outDir, { recursive: true });
@@ -23,6 +23,8 @@ for (const entryPoint of workerEntryPoints) {
   await Bun.build({
     entrypoints: [join(languageFeatureBasePath, entryPoint)],
     outdir: outDir,
+    minify: true,
+    format: 'iife',
   });
   console.log(
     `Compiled ${entryPoint} in ${(performance.now() - perf).toFixed(2)}ms`

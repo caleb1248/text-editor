@@ -23,9 +23,14 @@ export class WorkerManager {
     this._defaults = defaults;
     this._worker = null;
     this._client = null;
-    this._idleCheckInterval = window.setInterval(() => this._checkIfIdle(), 30 * 1000);
+    this._idleCheckInterval = window.setInterval(
+      () => this._checkIfIdle(),
+      30 * 1000
+    );
     this._lastUsedTime = 0;
-    this._configChangeListener = this._defaults.onDidChange(() => this._stopWorker());
+    this._configChangeListener = this._defaults.onDidChange(() =>
+      this._stopWorker()
+    );
   }
 
   private _stopWorker(): void {
@@ -59,10 +64,6 @@ export class WorkerManager {
       this._worker = createWebWorker<CSSWorker>({
         // module that exports the create() method and returns a `CSSWorker` instance
         moduleId: 'vs/language/css/cssWorker',
-        createWorker: () =>
-          new Worker(new URL('./css.worker', import.meta.url), {
-            type: 'module',
-          }),
         label: this._defaults.languageId,
 
         // passed in to the create() method
