@@ -1,23 +1,23 @@
 import './style.css';
-import 'monaco-editor/esm/vs/editor/edcore.main';
-import './languages/main';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import './language-support/main';
+import * as monaco from 'monaco-editor-core';
 import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-es';
-import { tabs, Tab, activeTab } from './tabs';
+import { tabs, Tab, activeTab } from './ui/tabs';
 import './workers';
 // monaco
 import './theme-support/tm-theme-support';
 import './theme-support/theming';
 // textmate integration
 import { registerHandlers } from './files';
-
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
 
 const welcomeEl = document.getElementById('welcome')!;
 welcomeEl.style.display = 'block';
 
-const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
+const theme = matchMedia('(prefers-color-scheme: dark)').matches
+  ? 'dark-plus'
+  : 'light-plus';
 const editor = monaco.editor.create(document.getElementById('editor')!, {
   theme,
 });
@@ -71,19 +71,19 @@ editor.onDidChangeModel((e) => {
   editor.layout();
 });
 
-monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
-monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-  diagnosticCodesToIgnore: [2307, 2792],
-});
+// monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+// monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+//   diagnosticCodesToIgnore: [2307, 2792],
+// });
 
-monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-  target: monaco.languages.typescript.ScriptTarget.ESNext,
-});
+// monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+//   target: monaco.languages.typescript.ScriptTarget.ESNext,
+// });
 
-monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-  allowComments: true,
-  validate: true,
-});
+// monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+//   allowComments: true,
+//   validate: true,
+// });
 
 declare global {
   var editor: monaco.editor.IStandaloneCodeEditor;

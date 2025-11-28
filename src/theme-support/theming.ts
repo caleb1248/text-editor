@@ -1,14 +1,16 @@
 // @ts-ignore
-import { StandaloneServices } from 'monaco-editor/esm/vs/editor/standalone/browser/standaloneServices.js';
+import { StandaloneServices } from 'monaco-editor-core/esm/vs/editor/standalone/browser/standaloneServices.js';
 // @ts-ignore
-import { IStandaloneThemeService } from 'monaco-editor/esm/vs/editor/standalone/common/standaloneTheme';
+import { IStandaloneThemeService } from 'monaco-editor-core/esm/vs/editor/standalone/common/standaloneTheme';
 // @ts-ignore
-import * as builtInThemes from 'monaco-editor/esm/vs/editor/standalone/common/themes';
+import * as builtInThemes from 'monaco-editor-core/esm/vs/editor/standalone/common/themes';
 import { ColorScheme, getDefaultColors } from './default-colors';
 
 const themeService = StandaloneServices.get(IStandaloneThemeService);
 
-const styleSheet = document.getElementById('dynamic-theme-colors') as HTMLStyleElement;
+const styleSheet = document.getElementById(
+  'dynamic-theme-colors'
+) as HTMLStyleElement;
 
 function registerThemeColors(theme: any) {
   const mergedColors = {
@@ -18,9 +20,10 @@ function registerThemeColors(theme: any) {
   let styleSheetContent = ':root {';
 
   for (const colorId in mergedColors) {
-    styleSheetContent += `--color-${colorId.replace(/\./g, '-')}: ${mergedColors[
-      colorId
-    ].toString()};`;
+    styleSheetContent += `--color-${colorId.replace(
+      /\./g,
+      '-'
+    )}: ${mergedColors[colorId].toString()};`;
   }
 
   styleSheetContent += '}';

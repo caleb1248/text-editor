@@ -21,7 +21,12 @@
               <li tabindex="1"><button data-onclick="files.saveAs">Save As...</button></li>
             </ul>
           </li>
-          <li tabindex="1"><span>Edit</span></li>
+          <li tabindex="1">
+            <span>Edit</span>
+            <ul class="submenu" role="menu">
+              <li tabindex="1"><button data-onclick="preferences.open">Preferences</button></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <div id="welcome"></div>

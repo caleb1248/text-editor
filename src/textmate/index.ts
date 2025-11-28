@@ -1,13 +1,13 @@
 import * as vsctm from 'vscode-textmate';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor-core';
 import wasmURL from 'vscode-oniguruma/release/onig.wasm?url';
 // @ts-ignore
-import { StandaloneServices } from 'monaco-editor/esm/vs/editor/standalone/browser/standaloneServices.js';
+import { StandaloneServices } from 'monaco-editor-core/esm/vs/editor/standalone/browser/standaloneServices.js';
 // @ts-ignore
-import { IStandaloneThemeService } from 'monaco-editor/esm/vs/editor/standalone/common/standaloneTheme';
+import { IStandaloneThemeService } from 'monaco-editor-core/esm/vs/editor/standalone/common/standaloneTheme';
 // @ts-ignore
-import * as builtInThemes from 'monaco-editor/esm/vs/editor/standalone/common/themes';
+import * as builtInThemes from 'monaco-editor-core/esm/vs/editor/standalone/common/themes';
 import { TMToMonacoToken, type IColorTheme } from './tm-to-monaco-token';
 
 const themeService = StandaloneServices.get(IStandaloneThemeService);
@@ -39,7 +39,9 @@ const registry = new vsctm.Registry({
       return fetchGrammar(url).then((grammar) => JSON.parse(grammar));
     }
 
-    return Promise.reject(new Error(`No grammar found for scope: ${scopeName}`));
+    return Promise.reject(
+      new Error(`No grammar found for scope: ${scopeName}`)
+    );
   },
   getInjections(scopeName) {
     const scopeParts = scopeName.split('.');
@@ -58,14 +60,16 @@ let currentTheme!: IColorTheme;
 
 function updateTheme(theme: any) {
   let convertedTheme = {
-    settings: (theme.themeData as monaco.editor.IStandaloneThemeData).rules.map((rule) => ({
-      scope: rule.token,
-      settings: {
-        foreground: rule.foreground,
-        background: rule.background,
-        fontStyle: rule.fontStyle,
-      },
-    })),
+    settings: (theme.themeData as monaco.editor.IStandaloneThemeData).rules.map(
+      (rule) => ({
+        scope: rule.token,
+        settings: {
+          foreground: rule.foreground,
+          background: rule.background,
+          fontStyle: rule.fontStyle,
+        },
+      })
+    ),
   };
 
   convertedTheme.settings.unshift({
@@ -116,7 +120,9 @@ themeService.onDidColorThemeChange((theme: any) => {
   updateTheme(theme);
 });
 
-type TokensProvider = monaco.languages.TokensProvider | monaco.languages.EncodedTokensProvider;
+type TokensProvider =
+  | monaco.languages.TokensProvider
+  | monaco.languages.EncodedTokensProvider;
 
 async function createTokensProvider(
   scopeName: string,
@@ -125,7 +131,11 @@ async function createTokensProvider(
 ): Promise<TokensProvider> {
   const grammar =
     languageId && config
-      ? await registry.loadGrammarWithConfiguration(scopeName, languageId, config)
+      ? await registry.loadGrammarWithConfiguration(
+          scopeName,
+          languageId,
+          config
+        )
       : await registry.loadGrammar(scopeName);
 
   if (!grammar) {
@@ -170,7 +180,11 @@ class TokensProviderCache {
     config?: vsctm.IGrammarConfiguration
   ): Promise<TokensProvider> {
     if (!this.cache[scopeName]) {
-      this.cache[scopeName] = await createTokensProvider(scopeName, languageId, config);
+      this.cache[scopeName] = await createTokensProvider(
+        scopeName,
+        languageId,
+        config
+      );
       console.log('created tokens provider for', scopeName);
     }
 

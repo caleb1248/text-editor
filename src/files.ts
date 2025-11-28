@@ -1,6 +1,6 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor-core';
 import { clickTarget, keyboardTarget, registerEvent } from './events';
-import { tabs, Tab, activeTab } from './tabs';
+import { tabs, Tab, activeTab } from './ui/tabs';
 
 const uriToFileMap = new Map<string, FileSystemFileHandle>();
 
