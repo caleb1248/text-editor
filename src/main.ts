@@ -1,23 +1,32 @@
 import './style.css';
-import './language-support/main';
+import { tabs, Tab, activeTab } from './ui/tabs';
+
+// monaco
+import './workers';
 import * as monaco from 'monaco-editor-core';
 import { emmetCSS, emmetHTML, emmetJSX } from 'emmet-monaco-es';
-import { tabs, Tab, activeTab } from './ui/tabs';
-import './workers';
-// monaco
+
+// Theme support
 import './theme-support/tm-theme-support';
 import './theme-support/theming';
-// textmate integration
+
+// Language support
+import './language-support/main';
+import {
+  ScriptTarget,
+  typescriptDefaults,
+} from './language-support/language-features/typescript/monaco.contribution';
+
+// File support
 import { registerHandlers } from './files';
+
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
 
 const welcomeEl = document.getElementById('welcome')!;
 welcomeEl.style.display = 'block';
 
-const theme = matchMedia('(prefers-color-scheme: dark)').matches
-  ? 'dark-plus'
-  : 'light-plus';
+const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
 const editor = monaco.editor.create(document.getElementById('editor')!, {
   theme,
 });
@@ -71,19 +80,14 @@ editor.onDidChangeModel((e) => {
   editor.layout();
 });
 
-// monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
-// monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-//   diagnosticCodesToIgnore: [2307, 2792],
-// });
+typescriptDefaults.setEagerModelSync(true);
+typescriptDefaults.setDiagnosticsOptions({
+  diagnosticCodesToIgnore: [2307, 2792],
+});
 
-// monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-//   target: monaco.languages.typescript.ScriptTarget.ESNext,
-// });
-
-// monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-//   allowComments: true,
-//   validate: true,
-// });
+typescriptDefaults.setCompilerOptions({
+  target: ScriptTarget.ESNext,
+});
 
 declare global {
   var editor: monaco.editor.IStandaloneCodeEditor;
@@ -99,6 +103,18 @@ monaco.languages.onLanguageEncountered('html', () => {
 monaco.languages.onLanguageEncountered('css', () => {
   emmetCSS(monaco);
 });
-monaco.languages.onLanguageEncountered('javascript', () => {
-  emmetJSX(monaco);
+
+let emmetJSXInitialized = false;
+monaco.languages.onLanguageEncountered('javascriptreact', () => {
+  if (!emmetJSXInitialized) {
+    emmetJSX(monaco, ['javascriptreact', 'typescriptreact']);
+    emmetJSXInitialized = true;
+  }
+});
+
+monaco.languages.onLanguageEncountered('typescriptreact', () => {
+  if (!emmetJSXInitialized) {
+    emmetJSX(monaco, ['javascriptreact', 'typescriptreact']);
+    emmetJSXInitialized = true;
+  }
 });

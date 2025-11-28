@@ -6,7 +6,7 @@
 import { LanguageServiceDefaults } from './monaco.contribution';
 import type { JSONWorker } from './jsonWorker';
 import { IDisposable, Uri, editor } from 'monaco-editor-core';
-import { createWebWorker } from '../../../common/workers';
+import { createWebWorker } from '../../common/workers';
 
 const STOP_WHEN_IDLE_FOR = 2 * 60 * 1000; // 2min
 
@@ -23,14 +23,9 @@ export class WorkerManager {
     this._defaults = defaults;
     this._worker = null;
     this._client = null;
-    this._idleCheckInterval = window.setInterval(
-      () => this._checkIfIdle(),
-      30 * 1000
-    );
+    this._idleCheckInterval = window.setInterval(() => this._checkIfIdle(), 30 * 1000);
     this._lastUsedTime = 0;
-    this._configChangeListener = this._defaults.onDidChange(() =>
-      this._stopWorker()
-    );
+    this._configChangeListener = this._defaults.onDidChange(() => this._stopWorker());
   }
 
   private _stopWorker(): void {
@@ -75,8 +70,7 @@ export class WorkerManager {
         createData: {
           languageSettings: this._defaults.diagnosticsOptions,
           languageId: this._defaults.languageId,
-          enableSchemaRequest:
-            this._defaults.diagnosticsOptions.enableSchemaRequest,
+          enableSchemaRequest: this._defaults.diagnosticsOptions.enableSchemaRequest,
         },
       });
 

@@ -13383,7 +13383,7 @@ function start(createClient) {
   return client;
 }
 
-// monaco-language-features/common/initialize.ts
+// src/language-support/common/initialize.ts
 var initialized2 = false;
 function initialize2(callback) {
   initialized2 = true;
@@ -29629,7 +29629,7 @@ function newHTMLDataProvider(id, customData) {
   return new HTMLDataProvider(id, customData);
 }
 
-// monaco-language-features/language-features/html/htmlWorker.ts
+// src/language-support/language-features/html/htmlWorker.ts
 class HTMLWorker {
   _ctx;
   _languageService;
@@ -29740,7 +29740,7 @@ class HTMLWorker {
   }
 }
 
-// monaco-language-features/language-features/html/html.worker.ts
+// src/language-support/language-features/html/html.worker.ts
 self.onmessage = () => {
   initialize2((ctx, createData) => {
     return new HTMLWorker(ctx, createData);

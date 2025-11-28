@@ -5,7 +5,7 @@ const languageFeatureBasePath = join(
   '../src/language-support/language-features'
 );
 
-const outDir = join(__dirname, '../src/language-support/workers-out');
+const outDir = join(__dirname, '../src/workers');
 
 if (await exists(outDir)) await rm(outDir, { recursive: true });
 await mkdir(outDir, { recursive: true });
@@ -15,6 +15,7 @@ const workerEntryPoints = [
   'json/json.worker.ts',
   'css/css.worker.ts',
   'html/html.worker.ts',
+  '../../editor.worker.ts',
 ];
 
 for (const entryPoint of workerEntryPoints) {

@@ -13383,7 +13383,7 @@ function start(createClient) {
   return client;
 }
 
-// monaco-language-features/common/initialize.ts
+// src/language-support/common/initialize.ts
 var initialized2 = false;
 function initialize2(callback) {
   initialized2 = true;
@@ -21063,7 +21063,7 @@ function getLanguageService(params) {
   };
 }
 
-// monaco-language-features/language-features/json/jsonWorker.ts
+// src/language-support/language-features/json/jsonWorker.ts
 var defaultSchemaRequestService;
 if (typeof fetch !== "undefined") {
   defaultSchemaRequestService = function(url) {
@@ -21240,7 +21240,7 @@ function joinPath(uriString, ...paths) {
   return uri.with({ path: normalizePath(parts) }).toString();
 }
 
-// monaco-language-features/language-features/json/json.worker.ts
+// src/language-support/language-features/json/json.worker.ts
 self.onmessage = () => {
   initialize2((ctx, createData) => {
     return new JSONWorker(ctx, createData);

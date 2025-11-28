@@ -57,7 +57,7 @@ for (const extension of extensions) {
   // inject asset references
 
   const result = `
-import { registerContributions } from '../../register';
+import { registerContributions } from '../../common/register';
 const contributes = ${JSON.stringify(contributes)};
 const assetMap = new Map();
 ${[...assetMap.entries()]

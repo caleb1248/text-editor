@@ -13383,7 +13383,7 @@ function start(createClient) {
   return client;
 }
 
-// monaco-language-features/common/initialize.ts
+// src/language-support/common/initialize.ts
 var initialized2 = false;
 function initialize2(callback) {
   initialized2 = true;
@@ -53280,7 +53280,7 @@ function getLESSLanguageService(options = defaultLanguageServiceOptions) {
   return createFacade(new LESSParser, new LESSCompletion(options, cssDataManager), new CSSHover(options && options.clientCapabilities, cssDataManager), new CSSNavigation(options && options.fileSystemProvider, true), new CSSCodeActions(cssDataManager), new CSSValidation(cssDataManager), cssDataManager);
 }
 
-// monaco-language-features/language-features/css/cssWorker.ts
+// src/language-support/language-features/css/cssWorker.ts
 class CSSWorker {
   _ctx;
   _languageService;
@@ -53453,7 +53453,7 @@ class CSSWorker {
   }
 }
 
-// monaco-language-features/language-features/css/css.worker.ts
+// src/language-support/language-features/css/css.worker.ts
 self.onmessage = () => {
   initialize2((ctx, createData) => {
     return new CSSWorker(ctx, createData);

@@ -6,7 +6,7 @@
 import { LanguageServiceDefaults } from './monaco.contribution';
 import type { TypeScriptWorker } from './tsWorker';
 import { editor, Uri, IDisposable } from 'monaco-editor-core';
-import { createWebWorker } from '../../../common/workers';
+import { createWebWorker } from '../../common/workers';
 
 export class WorkerManager {
   private _configChangeListener: IDisposable;
@@ -22,9 +22,7 @@ export class WorkerManager {
   ) {
     this._worker = null;
     this._client = null;
-    this._configChangeListener = this._defaults.onDidChange(() =>
-      this._stopWorker()
-    );
+    this._configChangeListener = this._defaults.onDidChange(() => this._stopWorker());
     this._updateExtraLibsToken = 0;
     this._extraLibsChangeListener = this._defaults.onDidExtraLibsChange(() =>
       this._updateExtraLibs()
@@ -83,7 +81,7 @@ export class WorkerManager {
         });
 
         if (this._defaults.getEagerModelSync()) {
-          return await this._worker.withSyncedResources(
+          return await this._worker!.withSyncedResources(
             editor
               .getModels()
               .filter((model) => model.getLanguageId() === this._modeId)
@@ -91,16 +89,14 @@ export class WorkerManager {
           );
         }
 
-        return await this._worker.getProxy();
+        return await this._worker!.getProxy();
       })();
     }
 
     return this._client;
   }
 
-  async getLanguageServiceWorker(
-    ...resources: Uri[]
-  ): Promise<TypeScriptWorker> {
+  async getLanguageServiceWorker(...resources: Uri[]): Promise<TypeScriptWorker> {
     const client = await this._getClient();
     if (this._worker) {
       await this._worker.withSyncedResources(resources);
