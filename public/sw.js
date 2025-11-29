@@ -49,6 +49,8 @@ sw.addEventListener('activate', (event) => {
 sw.addEventListener('fetch', (event) => {
   event.respondWith(
     (async () => {
+      if (event.url.includes('app.webmanifest')) return fetch('/app.webmanifest');
+
       const cache = await sw.caches.open(CACHE_VERSION);
       const cachedResponse = await cache.match(event.request);
       if (cachedResponse) {
