@@ -13,19 +13,19 @@ ChromeOS is ending support for Chrome apps, which includes Caret, a popular text
 - Support for opening and saving files using the File System Access API.
 - Editor tabs
 - File creation
+- Offline functionality
 
 ## Features not implemented yet
 
 - Syntax highlighting for more languages
 - Custom language support
 - Custom themes
-- Offline functionality
 - Web manifest (PWA support)
 
 ## Limitations
 
-- Although the editor looks similar to the VS Code editor, ~~it does not support extensions~~ it does support extensions, but only language definitions and syntax highlighting are supported, and extensions can only be added internally by adding to the source. As of now, there is no way to add extensions through the UI.
-- As this editor is intended to serve as a Caret replacement, support for Firefox and Safari is not planned.
+- Although the editor looks similar to VS Code, ~~it does not support extensions~~ it does support extensions, but only language definitions and syntax highlighting are supported, and extensions can only be added internally by adding to the source. As of now, there is no way to add extensions through the UI.
+- As this editor is intended to serve as a Caret replacement for ChromeOS, support for Firefox and Safari is not planned.
 
 ## Development
 

@@ -6,6 +6,10 @@ export default defineConfig({
     include: ['vscode-textmate', 'vscode-oniguruma'],
   },
 
+  build: {
+    manifest: true,
+  },
+
   resolve: {
     alias: {
       '@': join(__dirname, 'src'),
