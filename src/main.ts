@@ -26,9 +26,7 @@ mainEl.style.display = 'none';
 const welcomeEl = document.getElementById('welcome')!;
 welcomeEl.style.display = 'block';
 
-const theme = matchMedia('(prefers-color-scheme: dark)').matches
-  ? 'dark-plus'
-  : 'light-plus';
+const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
 
 const editor = monaco.editor.create(document.getElementById('editor')!, {
   theme,

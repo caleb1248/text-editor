@@ -1,3 +1,5 @@
+/// <reference path="./types/launchQueue.d.ts" />
+
 import * as monaco from 'monaco-editor-core';
 import { clickTarget, keyboardTarget, registerEvent } from './events';
 import { tabs, Tab, activeTab } from './ui/tabs';
@@ -21,8 +23,11 @@ async function newFile(editor: monaco.editor.IStandaloneCodeEditor) {
   return model;
 }
 
-async function openFile(editor: monaco.editor.IStandaloneCodeEditor) {
-  const [fileHandle] = await window.showOpenFilePicker();
+async function openFile(
+  editor: monaco.editor.IStandaloneCodeEditor,
+  handle?: FileSystemFileHandle
+) {
+  const fileHandle = handle || (await window.showOpenFilePicker())[0];
 
   for (const tab of tabs) {
     const isSameEntry = await tab.handle?.isSameEntry(fileHandle);
@@ -99,6 +104,13 @@ async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
 }
 
 export function registerHandlers(editor: monaco.editor.IStandaloneCodeEditor) {
+  window.launchQueue?.setConsumer((launchParams) => {
+    if (!launchParams.files) return;
+    for (const fileHandle of launchParams.files) {
+      openFile(editor, fileHandle);
+    }
+  });
+
   registerEvent(newFile.bind(null, editor), [
     keyboardTarget('n', { ctrl: true }),
     clickTarget('files.new'),

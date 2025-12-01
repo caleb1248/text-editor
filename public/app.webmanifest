@@ -3,6 +3,9 @@
   "name": "Text Editor",
   "short_name": "Text Editor",
   "start_url": "/",
+  "scope": "/",
+  "theme_color": "#181818",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "/icon/192.png",
@@ -14,5 +17,42 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "text/html": [".html", ".htm", ".xhtml"],
+        "application/javascript": [".js", ".cjs", ".mjs", ".jsx"],
+        "text/markdown": [".md", ".mdx"],
+        "text/plain": [
+          ".txt",
+          ".ts",
+          ".cts",
+          ".mts",
+          ".tsx",
+          ".cs",
+          ".py",
+          ".scss",
+          ".sass",
+          ".less",
+          ".rs",
+          ".c",
+          ".cpp",
+          ".fs",
+          ".gitignore",
+          ".vscodeignore",
+          ".sql"
+        ],
+        "application/json": [".json", ".jsonc", ".jsonl"],
+        "text/css": [".css"]
+      },
+      "icon": "/icon/192.png",
+      "launch_type": "single-client"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
 }
