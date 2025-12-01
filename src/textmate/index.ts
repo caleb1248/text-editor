@@ -160,6 +160,7 @@ async function createTokensProvider(
       };
     },
     tokenizeEncoded(line, state: vsctm.StateStack) {
+      if (line.length > 20000) throw new Error('Line is too long');
       let result = grammar.tokenizeLine2(line, state);
       return {
         endState: result.ruleStack,
