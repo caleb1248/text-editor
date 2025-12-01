@@ -6,6 +6,7 @@
   "scope": "/",
   "theme_color": "#181818",
   "background_color": "#ffffff",
+  "display_override": ["window-controls-overlay"],
   "icons": [
     {
       "src": "/icon/192.png",
@@ -41,6 +42,8 @@
           ".c",
           ".cpp",
           ".fs",
+          ".kt",
+          ".rs",
           ".gitignore",
           ".vscodeignore",
           ".sql"

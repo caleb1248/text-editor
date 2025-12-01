@@ -1,5 +1,6 @@
 import './style.css';
 import { tabs, Tab, activeTab } from './ui/tabs';
+import './ui/menubar-icon';
 
 // monaco
 import './workers';
