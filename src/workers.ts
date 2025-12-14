@@ -2,6 +2,7 @@ self.MonacoEnvironment = {
   getWorker: function (_: string, label: string) {
     switch (label) {
       case 'json':
+      case 'jsonc':
         return new Worker('/workers/json.worker.js');
       case 'css':
       case 'scss':

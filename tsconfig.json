@@ -16,7 +16,10 @@
     /* Linting */
     "strict": true,
     "noUncheckedSideEffectImports": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@/ui",
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src"]
 }

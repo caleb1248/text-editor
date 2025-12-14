@@ -1,34 +1,56 @@
-// @ts-ignore
-import { StandaloneServices } from 'monaco-editor-core/esm/vs/editor/standalone/browser/standaloneServices.js';
-// @ts-ignore
-import { IStandaloneThemeService } from 'monaco-editor-core/esm/vs/editor/standalone/common/standaloneTheme';
-// @ts-ignore
-import * as builtInThemes from 'monaco-editor-core/esm/vs/editor/standalone/common/themes';
-import { ColorScheme, getDefaultColors } from './default-colors';
+import { themeService } from './themeService';
+import { ColorScheme, getDefaultColors, isDark } from './default-colors';
 
-const themeService = StandaloneServices.get(IStandaloneThemeService);
+const styleSheet = document.getElementById('dynamic-theme-colors') as HTMLStyleElement;
 
-const styleSheet = document.getElementById(
-  'dynamic-theme-colors'
-) as HTMLStyleElement;
+let currentMergedColors: Record<string, string> = {};
+
+const themeColorMeta = document.head.querySelector('meta[name="theme-color"]')!;
 
 function registerThemeColors(theme: any) {
-  const mergedColors = {
+  currentMergedColors = {
     ...getDefaultColors(theme.type as ColorScheme),
     ...theme.themeData.colors,
   };
-  let styleSheetContent = ':root {';
+  let styleSheetContent = `:root {`;
 
-  for (const colorId in mergedColors) {
+  for (const colorId in currentMergedColors) {
     styleSheetContent += `--color-${colorId.replace(
       /\./g,
       '-'
-    )}: ${mergedColors[colorId].toString()};`;
+    )}: ${currentMergedColors[colorId].toString()};`;
   }
 
   styleSheetContent += '}';
   styleSheet.innerHTML = styleSheetContent;
+
+  if (isDark(theme.type)) {
+    document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+  }
+
+  themeColorMeta.setAttribute(
+    'content',
+    currentMergedColors['titleBar.activeBackground'].toString()
+  );
 }
+
+window.addEventListener('focus', () => {
+  const titleBarActiveBackground = currentMergedColors['titleBar.activeBackground'];
+  themeColorMeta.setAttribute('content', titleBarActiveBackground.toString());
+
+  document.getElementById('menubar-container')!.style.backgroundColor =
+    titleBarActiveBackground.toString();
+});
+
+window.addEventListener('blur', () => {
+  const titleBarInactiveBackground = currentMergedColors['titleBar.inactiveBackground'];
+  themeColorMeta.setAttribute('content', titleBarInactiveBackground.toString());
+
+  document.getElementById('menubar-container')!.style.backgroundColor =
+    titleBarInactiveBackground.toString();
+});
 
 registerThemeColors(themeService.getColorTheme());
 themeService.onDidColorThemeChange(registerThemeColors);

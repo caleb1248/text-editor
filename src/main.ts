@@ -1,6 +1,4 @@
 import './style.css';
-import { tabs, Tab, activeTab } from './ui/tabs';
-import './ui/menubar-icon';
 
 // monaco
 import './workers';
@@ -21,16 +19,24 @@ import {
 // File support
 import { registerHandlers } from './files';
 
+// Settings
+import { getSettings } from './settings-persistence';
+
+// ui
+import { tabs, Tab, activeTab } from './ui/tabs';
+import './ui/menubar-icon';
+
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
 
 const welcomeEl = document.getElementById('welcome')!;
 welcomeEl.style.display = 'block';
 
-const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus';
+const settings = getSettings();
 
 const editor = monaco.editor.create(document.getElementById('editor')!, {
-  theme,
+  theme: settings.theme,
+  fontSize: settings.fontSize,
 });
 
 monaco.editor.registerEditorOpener({
@@ -121,3 +127,5 @@ monaco.languages.onLanguageEncountered('typescriptreact', () => {
     emmetJSXInitialized = true;
   }
 });
+
+import('./ui/settings/settings');

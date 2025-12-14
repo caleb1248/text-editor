@@ -1,0 +1,141 @@
+.dialog {
+  color: var(--color-foreground);
+  border: none;
+  margin: 5rem;
+  width: auto;
+  height: auto;
+  border-radius: 3rem;
+  padding: 0;
+  background-color: var(--color-menu-background);
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.dialog::backdrop {
+  pointer-events: none;
+  /* backdrop-filter: blur(2px); */
+}
+
+.dialog > div {
+  background-color: var(--color-menu-background);
+  width: 100%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.dialog h1 {
+  font-size: 2.7rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+#settings-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+#settings-container select {
+  border-radius: 10px;
+  border: 1px solid var(--color-dropdown-border);
+  padding: 0.75rem 2.2rem 0.75rem 1rem;
+  color: inherit;
+  background-color: inherit;
+  min-width: 10rem;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjMWYxZjFmIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==');
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: calc(100% - 8px) calc(50% + 1px);
+  appearance: none;
+  font-size: 1.1rem;
+  background-color: var(--color-dropdown-background);
+}
+
+body.dark #settings-container select {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZTNlM2UzIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==');
+}
+
+#settings-container select:focus {
+  outline: none;
+  outline-offset: -2px;
+  background-color: var(--color-dropdown-background);
+}
+
+.dialog button {
+  border: none;
+  padding: 10px 24px;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+  background-color: oklch(from var(--color-button-background) 80% c h);
+  color: oklch(from var(--color-button-background) 25% 10% h);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.dialog button:hover {
+  background-color: oklch(from var(--color-button-background) 75% c h);
+}
+
+.dialog button.outline {
+  background-color: transparent;
+  color: hsl(from var(--color-button-background) h s 80%);
+  border: 1px solid var(--color-button-background);
+}
+
+.dialog button.outline:hover {
+  background-color: hsl(from var(--color-button-hoverBackground) h 0% l / 0.1);
+  border: 1px solid var(--color-button-background);
+}
+
+.dialog button.icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog button.icon-button:hover {
+  background-color: oklch(from var(--color-button-hoverBackground) l 0% h / 0.1);
+}
+
+.dialog button.icon-button > svg {
+  display: block;
+  fill: var(--color-icon-foreground);
+}
+
+.dialog input {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: 'Roboto';
+  flex: 1;
+  border: 1px solid var(--color-input-border);
+  background-color: inherit;
+  color: inherit;
+  font-size: 1.1rem;
+}
+
+.dialog input:focus {
+  outline: 2px solid var(--color-focusBorder);
+  outline-offset: -1px;
+}
+
+.dialog input {
+  appearance: textfield;
+}
+
+.dialog input::-webkit-inner-spin-button,
+.dialog input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

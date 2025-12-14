@@ -43,19 +43,35 @@ function convertTheme(theme: IVScodeTheme): editor.IStandaloneThemeData {
     }
   }
 
-  return {
+  const converted: editor.IStandaloneThemeData = {
     base:
       theme.type === 'light'
         ? 'vs'
         : theme.type === 'hcLight'
-        ? 'hc-light'
-        : theme.type === 'hcDark'
-        ? 'hc-black'
-        : 'vs-dark',
+          ? 'hc-light'
+          : theme.type === 'hcDark'
+            ? 'hc-black'
+            : 'vs-dark',
     inherit: false,
     rules,
     colors: theme.colors || {},
   };
+
+  switch (theme.type) {
+    case 'light':
+      converted.colors['background'] = '#f3f3f3';
+      break;
+    case 'hcLight':
+      converted.colors['background'] = '#ffffff';
+      break;
+    case 'hcDark':
+      converted.colors['background'] = '#000000';
+      break;
+    default:
+      converted.colors['background'] = '#252526';
+  }
+
+  return converted;
 }
 
 export { convertTheme };

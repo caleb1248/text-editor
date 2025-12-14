@@ -2,6 +2,10 @@ import { join } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  esbuild: {
+    jsxDev: false,
+  },
+
   optimizeDeps: {
     include: ['vscode-textmate', 'vscode-oniguruma'],
   },

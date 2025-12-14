@@ -1,26 +1,29 @@
 # text-editor
 
-A PWA alternative to Caret-T.
+A PWA alternative to Caret.
 
 ## Why?
 
-ChromeOS is ending support for Chrome apps, which includes Caret, a popular text editor for ChromeOS. This project aims to provide a supported alternative with improvements.
+ChromeOS is ending support for Chrome apps, which includes Caret, a popular text editor for ChromeOS. This project aims to:
+
+- Support newer versions of ChromeOS
+- Provide a better editing experience
 
 ## Features
 
-- Better syntax highlighting.
-- Enhanced intellisense for HTML, CSS, JavaScript, and Typescript.
-- Support for opening and saving files using the File System Access API.
+- Support for opening and saving files using the File System Access API
+- Better syntax highlighting
+- Enhanced intellisense for HTML, CSS, JavaScript, and Typescript
 - Editor tabs
 - File creation
+- Custom themes
 - Offline functionality
+- PWA support (installable as an app)
 
 ## Features not implemented yet
 
 - Syntax highlighting for more languages
 - Custom language support
-- Custom themes
-- Web manifest (PWA support)
 
 ## Limitations
 
@@ -29,7 +32,7 @@ ChromeOS is ending support for Chrome apps, which includes Caret, a popular text
 
 ## Development
 
-- Make sure you have [`bun`](https://bun.com) installed
+- Make sure you have the latest version of [`bun`](https://bun.com) installed
 - Clone the repo
 - Compile the workers and language extensions
 

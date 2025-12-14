@@ -1,15 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+  box-sizing: border-box;
+}
 :root {
   box-sizing: border-box;
-  --color-background: #f8f8f8;
-  --color-foreground: #000000;
+  /* --color-background: #f8f8f8;
+  --color-foreground: #000000; */
 }
-
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: #181818;
     --color-foreground: #ffffff;
   }
-}
+} */
 
 html,
 body,
@@ -18,7 +22,7 @@ body,
   padding: 0;
   width: 100vw;
   height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
   background-color: var(--color-background);
   color: var(--color-foreground);
 }
@@ -49,6 +53,15 @@ body,
   align-items: center;
   background-color: var(--color-titleBar-activeBackground);
   color: var(--color-titleBar-activeForeground);
+  -webkit-app-region: drag;
+  transition: background-color 0.1s ease-in;
+}
+
+#menubar {
+  position: relative;
+  user-select: none;
+  gap: 4px;
+  -webkit-app-region: no-drag;
 }
 
 #menubar,
@@ -63,15 +76,11 @@ body,
   display: flex !important;
 }
 
-#menubar {
-  position: relative;
-  user-select: none;
-  gap: 4px;
-}
-
 #menubar > li > span {
   padding: 8px 12px;
   border-radius: 1000px;
+  font-size: 16px;
+  line-height: 16px;
 }
 
 #menubar > li:hover > span {
@@ -92,6 +101,7 @@ body,
   background-color: var(--color-menu-background);
   color: var(--color-menu-foreground);
   border-radius: 16px;
+  /* border: 1px solid var(--color-menu-border) */
 }
 
 .submenu > li > button {

@@ -13,7 +13,7 @@ export function getDefaultColors(themeType: ColorScheme): { [colorId: string]: s
   return COLOR_THEME_LIGHT_INITIAL_COLORS;
 }
 
-function isDark(scheme: ColorScheme): boolean {
+export function isDark(scheme: ColorScheme): boolean {
   return scheme === ColorScheme.DARK || scheme === ColorScheme.HIGH_CONTRAST_DARK;
 }
 
