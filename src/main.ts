@@ -62,7 +62,7 @@ editor.onDidChangeModel((e) => {
     return;
   }
 
-  mainEl.style.display = 'block';
+  mainEl.style.display = 'grid';
   welcomeEl.style.display = 'none';
   mainEl.parentElement!.insertBefore(welcomeEl, mainEl);
 

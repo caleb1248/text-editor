@@ -36,6 +36,14 @@ async function openFile(
   }
 
   const file = await fileHandle.getFile();
+  if (file.size > 10_000_000) {
+    if (
+      !confirm(
+        'The file you are trying to open is very large, which may crash the app. Are you sure you want to proceed?'
+      )
+    )
+      return;
+  }
   const text = await file.text();
 
   const model = monaco.editor.createModel(
