@@ -32,7 +32,8 @@ export interface LanguageOptions {
   firstLine?: string;
   aliases?: string[];
   mimetypes?: string[];
-  configuration?: ILanguageConfiguration;
+  // URL pointing to the language configuration JSON
+  configuration?: string;
 }
 
 function registerTmGrammar(definition: GrammarDefinition): void {
@@ -85,21 +86,17 @@ function registerTmGrammar(definition: GrammarDefinition): void {
   if (language) {
     monaco.languages.registerTokensProviderFactory(language, {
       create() {
-        return cache.getTokensProvider(
-          scopeName,
-          monaco.languages.getEncodedLanguageId(language),
-          {
-            embeddedLanguages,
-            tokenTypes,
-            balancedBracketSelectors: [
-              ...(Array.isArray(definition.balancedBracketScopes)
-                ? definition.balancedBracketScopes
-                : []),
-              '*',
-            ],
-            unbalancedBracketSelectors: definition.unbalancedBracketScopes,
-          }
-        );
+        return cache.getTokensProvider(scopeName, monaco.languages.getEncodedLanguageId(language), {
+          embeddedLanguages,
+          tokenTypes,
+          balancedBracketSelectors: [
+            ...(Array.isArray(definition.balancedBracketScopes)
+              ? definition.balancedBracketScopes
+              : []),
+            '*',
+          ],
+          unbalancedBracketSelectors: definition.unbalancedBracketScopes,
+        });
       },
     });
   }
@@ -107,13 +104,18 @@ function registerTmGrammar(definition: GrammarDefinition): void {
 
 export function registerContributions(contributions: Contributions) {
   for (const language of contributions.languages) {
-    const { configuration, ...extensionPoint } = language;
+    const { configuration: configurationURL, ...extensionPoint } = language;
+
     monaco.languages.register(extensionPoint);
-    if (configuration) {
-      monaco.languages.setLanguageConfiguration(
-        language.id,
-        convertLanguageConfiguration(configuration)
-      );
+
+    if (configurationURL) {
+      monaco.languages.onLanguageEncountered(language.id, async () => {
+        const configurationJSON = await fetch(configurationURL).then((r) => r.json());
+        monaco.languages.setLanguageConfiguration(
+          language.id,
+          convertLanguageConfiguration(configurationJSON)
+        );
+      });
     }
   }
 
