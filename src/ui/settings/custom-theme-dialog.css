@@ -20,14 +20,6 @@
   cursor: default;
 }
 
-#theme-dialog .confirm:not(:disabled):hover {
-  /* background-color: #00a656; */
-}
-
-#theme-dialog .confirm:focus-visible {
-  /* outline: 2px solid #00b55e; */
-}
-
 #theme-input-editor {
   border-radius: 1rem;
   overflow: hidden;

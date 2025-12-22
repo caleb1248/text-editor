@@ -43,8 +43,12 @@ const settingsUI = element(
             const select = e.target as HTMLSelectElement;
             const selectedTheme = select.value;
             monaco.editor.setTheme(selectedTheme);
-
             setSetting('theme', selectedTheme);
+
+            // Sometimes changing the theme messes up syntax highlighting. Retokenizing the model fixes this problem.
+            for (const model of monaco.editor.getModels()) {
+              (model as any).tokenization.resetTokenization();
+            }
           }}
         ></select>
       </label>
