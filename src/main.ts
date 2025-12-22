@@ -24,6 +24,7 @@ import { getSettings } from './settings-persistence';
 
 // ui
 import { tabs, Tab, activeTab } from './ui/tabs';
+import './ui/menubar';
 import './ui/menubar-icon';
 
 const mainEl = document.getElementById('main')!;

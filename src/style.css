@@ -1,19 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
   box-sizing: border-box;
 }
-:root {
-  box-sizing: border-box;
-  /* --color-background: #f8f8f8;
-  --color-foreground: #000000; */
-}
-/* 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #181818;
-    --color-foreground: #ffffff;
-  }
-} */
 
 html,
 body,
@@ -21,7 +10,7 @@ body,
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   font-family: Roboto, Arial, Helvetica, sans-serif;
   background-color: var(--color-background);
   color: var(--color-foreground);
@@ -48,7 +37,7 @@ body,
 
 #menubar-container {
   border-bottom: 1px solid #7f7f7f22;
-  padding: 5px 0;
+  padding: 0;
   display: flex;
   align-items: center;
   background-color: var(--color-titleBar-activeBackground);
@@ -58,9 +47,9 @@ body,
 }
 
 #menubar {
-  position: relative;
   user-select: none;
   gap: 4px;
+  padding: 0;
   -webkit-app-region: no-drag;
 }
 
@@ -68,22 +57,23 @@ body,
 .submenu {
   list-style: none;
   margin: 0;
-  padding: 6px;
   display: flex;
 }
 
-#menubar:focus-within > li:hover > .submenu {
-  display: flex !important;
+#menubar > li {
+  padding-block: 3px;
+  position: relative;
 }
 
 #menubar > li > span {
   padding: 8px 12px;
   border-radius: 1000px;
   font-size: 16px;
-  line-height: 16px;
+  display: block;
 }
 
-#menubar > li:hover > span {
+#menubar > li:hover > span,
+#menubar > li:has(.submenu.visible) > span {
   background-color: #7f7f7f55;
 }
 
@@ -102,6 +92,10 @@ body,
   color: var(--color-menu-foreground);
   border-radius: 16px;
   /* border: 1px solid var(--color-menu-border) */
+}
+
+.submenu.visible {
+  display: flex;
 }
 
 .submenu > li > button {
