@@ -21,5 +21,6 @@
     "jsxImportSource": "@/ui",
     "paths": { "@/*": ["./src/*"] }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/language-support/basic-languages"]
 }

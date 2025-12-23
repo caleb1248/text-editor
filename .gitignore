@@ -12,6 +12,7 @@ dist
 dist-ssr
 basic-languages-out
 basic-languages
+src/language-support/main.ts
 *.local
 
 # Editor directories and files

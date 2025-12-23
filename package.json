@@ -11,7 +11,7 @@
     "compile-languages": "bun scripts/compile-languages.ts",
     "download-languages": "bun scripts/download-languages.ts",
     "format": "bunx --bun prettier --write .",
-    "postinstall": "bun run compile-workers && bun run download-languages && bun run compile-languages"
+    "postinstall": "bun scripts/postinstall.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.3.3",
