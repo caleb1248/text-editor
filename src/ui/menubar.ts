@@ -1,3 +1,4 @@
+import './menubar.css';
 const menubar = document.getElementById('menubar')!;
 
 let currentOpenSubmenu: HTMLUListElement | undefined;

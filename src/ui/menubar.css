@@ -1,0 +1,79 @@
+#menubar-container {
+  border-bottom: 1px solid #7f7f7f22;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-titleBar-activeBackground);
+  color: var(--color-titleBar-activeForeground);
+  -webkit-app-region: drag;
+  transition: background-color 0.1s ease-in;
+  padding-left: 5px;
+}
+
+#menubar {
+  user-select: none;
+  gap: 4px;
+  padding: 0;
+  -webkit-app-region: no-drag;
+}
+
+#menubar,
+.submenu {
+  list-style: none;
+  margin: 0;
+  display: flex;
+}
+
+#menubar > li {
+  padding-block: 3px;
+  position: relative;
+}
+
+#menubar > li > span {
+  padding: 8px 12px;
+  border-radius: 1000px;
+  font-size: 16px;
+  display: block;
+}
+
+#menubar > li:hover > span,
+#menubar > li:has(.submenu.visible) > span {
+  background-color: #7f7f7f55;
+}
+
+.submenu {
+  padding: 10px;
+  min-width: 200px;
+  position: absolute;
+  z-index: 9999;
+  top: 100%;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 8px #00000022;
+  background-color: var(--color-menu-background);
+  color: var(--color-menu-foreground);
+  border-radius: 16px;
+  /* border: 1px solid var(--color-menu-border) */
+}
+
+.submenu.visible {
+  display: flex;
+}
+
+.submenu > li > button {
+  font-size: 1rem;
+  text-align: left;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.submenu > li > button:hover {
+  background-color: #7f7f7f22;
+}

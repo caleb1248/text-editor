@@ -30,27 +30,23 @@ function registerThemeColors(theme: any) {
     document.body.classList.remove('dark');
   }
 
-  themeColorMeta.setAttribute(
-    'content',
-    currentMergedColors['titleBar.activeBackground'].toString()
-  );
+  updateTitleBarColor();
 }
 
-window.addEventListener('focus', () => {
-  const titleBarActiveBackground = currentMergedColors['titleBar.activeBackground'];
-  themeColorMeta.setAttribute('content', titleBarActiveBackground.toString());
+const menubarContainer = document.getElementById('menubar-container')!;
 
-  document.getElementById('menubar-container')!.style.backgroundColor =
-    titleBarActiveBackground.toString();
-});
+function updateTitleBarColor() {
+  const color =
+    currentMergedColors[
+      document.hasFocus() ? 'titleBar.activeBackground' : 'titleBar.inactiveBackground'
+    ];
+  themeColorMeta.setAttribute('content', color.toString());
 
-window.addEventListener('blur', () => {
-  const titleBarInactiveBackground = currentMergedColors['titleBar.inactiveBackground'];
-  themeColorMeta.setAttribute('content', titleBarInactiveBackground.toString());
-
-  document.getElementById('menubar-container')!.style.backgroundColor =
-    titleBarInactiveBackground.toString();
-});
+  menubarContainer.style.backgroundColor = color.toString();
+}
 
 registerThemeColors(themeService.getColorTheme());
 themeService.onDidColorThemeChange(registerThemeColors);
+
+window.addEventListener('focus', updateTitleBarColor);
+window.addEventListener('blur', updateTitleBarColor);

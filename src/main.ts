@@ -10,7 +10,7 @@ import './theme-support/tm-theme-support';
 import './theme-support/theming';
 
 // Language support
-import './language-support/main';
+await import('./language-support/main');
 import {
   ScriptTarget,
   typescriptDefaults,

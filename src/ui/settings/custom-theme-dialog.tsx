@@ -123,6 +123,10 @@ function registerTheme() {
   monaco.editor.defineTheme(themeId, converted);
   monaco.editor.setTheme(themeId);
 
+  for (const model of monaco.editor.getModels()) {
+    (model as any).tokenization.resetTokenization();
+  }
+
   addUserTheme(themeId, themeName.value, converted);
 
   themeDialog.close();
