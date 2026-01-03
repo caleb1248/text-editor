@@ -6,12 +6,14 @@ interface Settings {
     themes: { id: string; name: string; data: editor.IStandaloneThemeData }[];
     currentIdCounter: number;
   };
+  tabSize: number;
   fontSize: number;
 }
 
 const defaultSettings: Settings = {
   theme: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-plus' : 'light-plus',
   userThemes: { themes: [], currentIdCounter: 0 },
+  tabSize: 2,
   fontSize: 14,
 };
 

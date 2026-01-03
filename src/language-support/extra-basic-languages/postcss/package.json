@@ -1,0 +1,112 @@
+{
+  "name": "postcss",
+  "version": "1.0.8",
+  "displayName": "PostCSS Language Support",
+  "description": "Syntax highlighting for modern and experimental CSS in VSCode",
+  "author": "Jonathan Neal <jonathantneal@hotmail.com>",
+  "publisher": "csstools",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csstools/postcss-language.git"
+  },
+  "homepage": "https://github.com/csstools/postcss-language#readme",
+  "bugs": "https://github.com/csstools/postcss-language/issues",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#293845",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.18.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "postcss",
+        "configuration": "./postcss.language.configuration.json",
+        "aliases": [
+          "PostCSS",
+          "pcss"
+        ],
+        "extensions": [
+          ".css",
+          ".pcss",
+          ".postcss"
+        ],
+        "mimetypes": [
+          "text/css",
+          "text/x-pcss",
+          "text/pcss"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "source.css",
+        "path": "./syntaxes/source.css.tmLanguage.json",
+        "language": "postcss"
+      },
+      {
+        "scopeName": "source.postcss",
+        "injectTo": [
+          "source.css"
+        ],
+        "path": "./syntaxes/source.postcss.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.css.postcss",
+        "injectTo": [
+          "source.css"
+        ],
+        "path": "./syntaxes/source.css.postcss.tmLanguage.json"
+      },
+      {
+        "scopeName": "text.html.markdown.css",
+        "path": "./syntaxes/text.html.markdown.css.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.css": "postcss"
+        }
+      },
+      {
+        "scopeName": "comment.injection.css",
+        "path": "./syntaxes/comment.injection.css.tmLanguage.json",
+        "injectTo": [
+          "source.css"
+        ]
+      }
+    ]
+  },
+  "keywords": [
+    "css",
+    "cssnext",
+    "csswg",
+    "experimental",
+    "future",
+    "grammar",
+    "html",
+    "language",
+    "logical",
+    "markdown",
+    "marko",
+    "md",
+    "modern",
+    "next",
+    "postcss",
+    "postcss-preset-env",
+    "spec",
+    "specification",
+    "stage",
+    "style",
+    "syntax",
+    "tag",
+    "vscode",
+    "w3c"
+  ]
+}

@@ -5,7 +5,9 @@ import * as monaco from 'monaco-editor-core';
 import { openThemeDialog } from './custom-theme-dialog';
 import { element } from '../jsx-runtime';
 import { themeIdToNameMap } from '@/theme-support/tm-theme-support';
-import { setSetting } from '@/settings-persistence';
+import { getSettings, setSetting } from '@/settings-persistence';
+
+const initialSettings = getSettings();
 
 const settingsUI = element(
   <dialog
@@ -19,24 +21,8 @@ const settingsUI = element(
   >
     <div>
       <h1>Settings</h1>
-      <label>
-        Font size
-        <input
-          type="number"
-          oninput={(e) => {
-            const parsed = parseInt((e.target as HTMLInputElement).value, 10);
-            if (!isNaN(parsed) && parsed > 0) {
-              setSetting('fontSize', parsed);
-              for (const editor of monaco.editor.getEditors()) {
-                editor.updateOptions({ fontSize: parsed });
-              }
-            }
-          }}
-        />
-      </label>
-      <label>
-        Theme
-        <div style="height:0.75rem"></div>
+
+      <SettingControl label="Theme">
         <select
           class="theme-select"
           onchange={(e) => {
@@ -51,15 +37,64 @@ const settingsUI = element(
             }
           }}
         ></select>
-      </label>
+      </SettingControl>
+
       <div>
         Custom themes
         <div style="height:0.75rem"></div>
         <button onclick={openThemeDialog}>Import</button>
       </div>
+
+      <SettingControl label="Font Size">
+        <input
+          type="number"
+          value={initialSettings.fontSize}
+          min="6"
+          max="100"
+          style="width: 150px;"
+          oninput={(e) => {
+            const parsed = parseInt((e.target as HTMLInputElement).value, 10);
+            if (!isNaN(parsed) && parsed > 0) {
+              setSetting('fontSize', parsed);
+              for (const editor of monaco.editor.getEditors()) {
+                editor.updateOptions({ fontSize: parsed });
+              }
+            }
+          }}
+        />
+      </SettingControl>
+      <SettingControl label="Tab Size">
+        <input
+          type="number"
+          value={initialSettings.tabSize}
+          min="1"
+          max="16"
+          style="width: 150px;"
+          oninput={(e) => {
+            const parsed = parseInt((e.target as HTMLInputElement).value, 10);
+            if (!isNaN(parsed) && parsed > 0) {
+              setSetting('tabSize', parsed);
+              for (const model of monaco.editor.getModels()) {
+                model.updateOptions({ tabSize: parsed });
+              }
+            }
+          }}
+        />
+      </SettingControl>
     </div>
   </dialog>
 ) as HTMLDialogElement;
+
+function SettingControl({ label, children }: { label: string; children: JSX.Element }) {
+  return (
+    <label>
+      {label}
+      <div style="height:0.75rem"></div>
+      {children}
+    </label>
+  );
+}
+
 document.querySelector('#dialogs')!.appendChild(settingsUI);
 
 const themeSelector = settingsUI.querySelector<HTMLSelectElement>('.theme-select')!;

@@ -1,4 +1,4 @@
-import { isWorkerInitialized } from './language-support/common/initialize';
+import { isWorkerInitialized } from '../common/initialize';
 // @ts-ignore
 import { start } from 'monaco-editor-core/esm/vs/editor/editor.worker.start.js';
 

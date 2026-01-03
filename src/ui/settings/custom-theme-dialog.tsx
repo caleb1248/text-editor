@@ -10,11 +10,7 @@ const themeInputDiv = element(<div id="theme-input-editor"></div>);
 
 const themeName = state('');
 const jsonIsValid = state(false);
-const confirmDisabled = derive(
-  () => !jsonIsValid.value || themeName.value.trim().length === 0,
-  jsonIsValid,
-  themeName
-);
+const confirmDisabled = derive(() => !jsonIsValid.value || themeName.value.trim().length === 0);
 
 confirmDisabled.subscribe((v) => {
   console.log('confirm disabled changed', !jsonIsValid.value, themeName.value.trim().length === 0);
@@ -71,9 +67,8 @@ export const themeDialog = element(
             <button
               class="confirm"
               disabled={confirmDisabled}
-              title={derive(
-                () => (confirmDisabled.value ? 'Please enter a valid theme JSON' : 'Confirm'),
-                confirmDisabled
+              title={derive(() =>
+                confirmDisabled.value ? 'Please enter a valid theme JSON' : 'Confirm'
               )}
               onclick={registerTheme}
             >

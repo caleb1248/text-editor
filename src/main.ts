@@ -18,6 +18,7 @@ import {
 
 // File support
 import { registerHandlers } from './files';
+import './language-selection';
 
 // Settings
 import { getSettings } from './settings-persistence';
@@ -26,6 +27,7 @@ import { getSettings } from './settings-persistence';
 import { tabs, Tab, activeTab } from './ui/tabs';
 import './ui/menubar';
 import './ui/menubar-icon';
+import { addLanguageSelection } from './language-selection';
 
 const mainEl = document.getElementById('main')!;
 mainEl.style.display = 'none';
@@ -71,7 +73,8 @@ editor.onDidChangeModel((e) => {
 
   for (let i = 0; i < tabs.length; i++) {
     if (tabs[i].model.uri.toString() === newUri.toString()) {
-      activeTab.current = i;
+      activeTab.value = i;
+      console.log('active tab set to', i);
       found = true;
       break;
     }
@@ -81,11 +84,12 @@ editor.onDidChangeModel((e) => {
     const model = monaco.editor.getModel(newUri);
     if (model) {
       const newTab = new Tab(editor, model);
-      const targetIndex = (activeTab.current ?? -1) + 1;
+      const targetIndex = (activeTab.value ?? -1) + 1;
       newTab.insert(targetIndex);
-      activeTab.current = targetIndex;
+      activeTab.value = targetIndex;
     }
   }
+  console.log('model changed to', newUri.toString());
 
   editor.layout();
 });
@@ -130,3 +134,4 @@ monaco.languages.onLanguageEncountered('typescriptreact', () => {
 });
 
 import('./ui/settings/settings');
+addLanguageSelection(editor);

@@ -37,14 +37,14 @@
   margin-bottom: 0.5rem;
 }
 
-#settings-container select {
+.dialog select {
   border-radius: 10px;
   border: 1px solid var(--color-dropdown-border);
   padding: 0.75rem 2.2rem 0.75rem 1rem;
   color: inherit;
   background-color: inherit;
   min-width: 10rem;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjMWYxZjFmIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==');
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjMWYxZjFmIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==");
   background-repeat: no-repeat;
   background-size: 24px;
   background-position: calc(100% - 8px) calc(50% + 1px);
@@ -53,11 +53,11 @@
   background-color: var(--color-dropdown-background);
 }
 
-body.dark #settings-container select {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZTNlM2UzIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==');
+body.dark .dialog select {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZTNlM2UzIj48cGF0aCBkPSJNNDgwLTM0NCAyNDAtNTg0bDU2LTU2IDE4NCAxODQgMTg0LTE4NCA1NiA1Ni0yNDAgMjQwWiIvPjwvc3ZnPg==");
 }
 
-#settings-container select:focus {
+.dialog select:focus {
   outline: none;
   outline-offset: -2px;
   background-color: var(--color-dropdown-background);
@@ -113,11 +113,12 @@ body.dark #settings-container select {
 }
 
 .dialog input {
-  padding: 12px;
-  border-radius: 3px;
-  font-size: 14px;
+  padding: 0.75rem 1rem;
+  min-width: 200px;
+  border-radius: 10px;
+  font-size: 12px;
   line-height: 20px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   flex: 1;
   border: 1px solid var(--color-input-border);
   background-color: inherit;
@@ -126,7 +127,7 @@ body.dark #settings-container select {
 }
 
 .dialog input:focus {
-  outline: 2px solid var(--color-focusBorder);
+  outline: 1px solid var(--color-focusBorder);
   outline-offset: -1px;
 }
 

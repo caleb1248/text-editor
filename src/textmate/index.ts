@@ -31,17 +31,22 @@ const registry = new vsctm.Registry({
   loadGrammar(scopeName) {
     console.log('loadGrammar', scopeName);
     function fetchGrammar(path: string) {
-      return fetch(path).then((response) => response.text());
+      return fetch(path).then((response) => {
+        return response.text();
+      });
     }
 
     const url = scopeUrlMap[scopeName];
     if (url) {
-      return fetchGrammar(url).then((grammar) => JSON.parse(grammar));
+      return fetchGrammar(url)
+        .then((grammar) => JSON.parse(grammar))
+        .catch(() => {
+          console.error('invalid json grammar', scopeName);
+        });
     }
 
-    return Promise.reject(
-      new Error(`No grammar found for scope: ${scopeName}`)
-    );
+    console.error(new Error(`No grammar found for scope: ${scopeName}`));
+    return Promise.resolve(null);
   },
   getInjections(scopeName) {
     const scopeParts = scopeName.split('.');
@@ -60,16 +65,14 @@ let currentTheme!: IColorTheme;
 
 function updateTheme(theme: any) {
   let convertedTheme = {
-    settings: (theme.themeData as monaco.editor.IStandaloneThemeData).rules.map(
-      (rule) => ({
-        scope: rule.token,
-        settings: {
-          foreground: rule.foreground,
-          background: rule.background,
-          fontStyle: rule.fontStyle,
-        },
-      })
-    ),
+    settings: (theme.themeData as monaco.editor.IStandaloneThemeData).rules.map((rule) => ({
+      scope: rule.token,
+      settings: {
+        foreground: rule.foreground,
+        background: rule.background,
+        fontStyle: rule.fontStyle,
+      },
+    })),
   };
 
   convertedTheme.settings.unshift({
@@ -120,9 +123,7 @@ themeService.onDidColorThemeChange((theme: any) => {
   updateTheme(theme);
 });
 
-type TokensProvider =
-  | monaco.languages.TokensProvider
-  | monaco.languages.EncodedTokensProvider;
+type TokensProvider = monaco.languages.TokensProvider | monaco.languages.EncodedTokensProvider;
 
 async function createTokensProvider(
   scopeName: string,
@@ -131,11 +132,7 @@ async function createTokensProvider(
 ): Promise<TokensProvider> {
   const grammar =
     languageId && config
-      ? await registry.loadGrammarWithConfiguration(
-          scopeName,
-          languageId,
-          config
-        )
+      ? await registry.loadGrammarWithConfiguration(scopeName, languageId, config)
       : await registry.loadGrammar(scopeName);
 
   if (!grammar) {
@@ -179,14 +176,14 @@ class TokensProviderCache {
     scopeName: string,
     languageId?: number,
     config?: vsctm.IGrammarConfiguration
-  ): Promise<TokensProvider> {
+  ): Promise<TokensProvider | null> {
     if (!this.cache[scopeName]) {
-      this.cache[scopeName] = await createTokensProvider(
-        scopeName,
-        languageId,
-        config
-      );
-      console.log('created tokens provider for', scopeName);
+      try {
+        this.cache[scopeName] = await createTokensProvider(scopeName, languageId, config);
+        console.log('created tokens provider for', scopeName);
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     return this.cache[scopeName];

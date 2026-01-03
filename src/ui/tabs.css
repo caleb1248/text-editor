@@ -30,7 +30,7 @@
   color: var(--color-tab-activeForeground);
 }
 
-.tab > button {
+.tab>button {
   background: none;
   border: none;
   cursor: pointer;
@@ -41,13 +41,20 @@
   border-radius: 9999px;
 }
 
-.tab > button:hover {
+.tab>button:hover {
   background-color: #7f7f7f22;
 }
+
 .tab svg {
   fill: var(--color-tab-inactiveForeground);
 }
 
 .tab.active svg {
   fill: var(--color-tab-activeForeground);
+}
+
+.tab.saved .icon-unsaved,
+.tab.unsaved svg:hover .icon-unsaved,
+.tab.unsaved svg:not(:hover) .icon-x {
+  display: none;
 }

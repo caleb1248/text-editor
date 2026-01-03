@@ -1,0 +1,102 @@
+{
+    "name": "language-stylus",
+    "displayName": "stylus",
+    "description": "stylus language support",
+    "version": "1.16.0",
+    "publisher": "sysoev",
+    "engines": {
+        "vscode": "^1.59.0"
+    },
+    "license": "MIT",
+    "sponsor": {
+        "url": "https://opencollective.com/stylus"
+    },
+    "author": {
+        "name": "Stanislav Sysoev",
+        "email": "d4rkr00t@gmail.com"
+    },
+    "maintainers": [
+        {
+            "name": "Lei Chen",
+            "email": "chenleicoder@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/d4rkr00t/language-stylus",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/d4rkr00t/language-stylus.git"
+    },
+    "bugs": "https://github.com/d4rkr00t/language-stylus/issues",
+    "main": "./out/src/extension",
+    "icon": "assets/icon.png",
+    "keywords": [
+        "styl",
+        "stylus",
+        "language-stylus",
+        "vscode-stylus",
+        "stylus-intellisense"
+    ],
+    "activationEvents": [
+        "onLanguage:stylus"
+    ],
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "stylus",
+                "aliases": [
+                    "Stylus",
+                    "stylus"
+                ],
+                "extensions": [
+                    ".styl",
+                    ".stylus"
+                ],
+                "configuration": "./stylus.configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "stylus",
+                "scopeName": "source.stylus",
+                "path": "./syntaxes/stylus.json"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Language Stylus Configuration",
+            "properties": {
+                "languageStylus.useSeparator": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Separate property from value with ':'."
+                },
+                "languageStylus.useBuiltinFunctions": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Toggle matches for Stylus Builtin Functions on autocomplete."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "build": "npx vsce package",
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "patch": "vsce publish patch",
+        "minor": "vsce publish minor",
+        "major": "vsce publish major"
+    },
+    "devDependencies": {
+        "@types/node": "^16.4.13",
+        "@types/vscode": "^1.59.0",
+        "typescript": "^4.7.4",
+        "vsce": "^2.9.2"
+    },
+    "dependencies": {
+        "stylus": "^0.58.1",
+        "vscode-css-languageservice": "^6.0.1"
+    }
+}

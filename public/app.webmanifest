@@ -46,7 +46,8 @@
           ".rs",
           ".gitignore",
           ".vscodeignore",
-          ".sql"
+          ".sql",
+          ".log"
         ],
         "application/json": [".json", ".jsonc", ".jsonl"],
         "text/css": [".css"]

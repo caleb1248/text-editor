@@ -1,9 +1,6 @@
 import { join } from 'path';
 import { rm, mkdir, exists } from 'fs/promises';
-const languageFeatureBasePath = join(
-  __dirname,
-  '../src/language-support/language-features'
-);
+const languageFeatureBasePath = join(__dirname, '../src/language-support/language-features');
 
 const outDir = join(__dirname, '../public/workers');
 
@@ -15,7 +12,7 @@ const workerEntryPoints = [
   'json/json.worker.ts',
   'css/css.worker.ts',
   'html/html.worker.ts',
-  '../../editor.worker.ts',
+  'editor.worker.ts',
 ];
 
 for (const entryPoint of workerEntryPoints) {
@@ -26,7 +23,5 @@ for (const entryPoint of workerEntryPoints) {
     minify: true,
     format: 'iife',
   });
-  console.log(
-    `Compiled ${entryPoint} in ${(performance.now() - perf).toFixed(2)}ms`
-  );
+  console.log(`Compiled ${entryPoint} in ${(performance.now() - perf).toFixed(2)}ms`);
 }

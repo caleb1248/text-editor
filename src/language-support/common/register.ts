@@ -86,42 +86,56 @@ function registerTmGrammar(definition: GrammarDefinition): void {
   if (language) {
     monaco.languages.registerTokensProviderFactory(language, {
       create() {
-        return cache.getTokensProvider(scopeName, monaco.languages.getEncodedLanguageId(language), {
-          embeddedLanguages,
-          tokenTypes,
-          balancedBracketSelectors: [
-            ...(Array.isArray(definition.balancedBracketScopes)
-              ? definition.balancedBracketScopes
-              : []),
-            '*',
-          ],
-          unbalancedBracketSelectors: definition.unbalancedBracketScopes,
-        });
+        const result = cache.getTokensProvider(
+          scopeName,
+          monaco.languages.getEncodedLanguageId(language),
+          {
+            embeddedLanguages,
+            tokenTypes,
+            balancedBracketSelectors: [
+              ...(Array.isArray(definition.balancedBracketScopes)
+                ? definition.balancedBracketScopes
+                : []),
+              '*',
+            ],
+            unbalancedBracketSelectors: definition.unbalancedBracketScopes,
+          }
+        );
+        if (!result) {
+          console.warn(`No grammar found for language ${language} with scope ${scopeName}`);
+        } else {
+          console.log('tokens provider creation successful', language, scopeName);
+        }
+        return result;
       },
     });
   }
 }
 
-export function registerContributions(contributions: Contributions) {
-  for (const language of contributions.languages) {
-    const { configuration: configurationURL, ...extensionPoint } = language;
+export function registerContributions(contributions: Contributions, extensionName?: string): void {
+  try {
+    for (const language of contributions.languages) {
+      const { configuration: configurationURL, ...extensionPoint } = language;
 
-    monaco.languages.register(extensionPoint);
+      monaco.languages.register(extensionPoint);
 
-    if (configurationURL) {
-      monaco.languages.onLanguageEncountered(language.id, async () => {
-        const configurationJSON = await fetch(configurationURL).then((r) => r.json());
-        monaco.languages.setLanguageConfiguration(
-          language.id,
-          convertLanguageConfiguration(configurationJSON)
-        );
-      });
+      if (configurationURL) {
+        monaco.languages.onLanguageEncountered(language.id, async () => {
+          const configurationJSON = await fetch(configurationURL).then((r) => r.json());
+          monaco.languages.setLanguageConfiguration(
+            language.id,
+            convertLanguageConfiguration(configurationJSON)
+          );
+        });
+      }
     }
-  }
 
-  if (contributions.grammars) {
-    for (const grammar of contributions.grammars) {
-      registerTmGrammar(grammar);
+    if (contributions.grammars) {
+      for (const grammar of contributions.grammars) {
+        registerTmGrammar(grammar);
+      }
     }
+  } catch (e) {
+    console.error(`Failed to register contributions for ${extensionName}: `, e);
   }
 }

@@ -72,7 +72,7 @@ for(const language of contributes.languages || []) {
   }
 }
 assetMap.clear();
-registerContributions(contributes);
+registerContributions(contributes, "${extension}");
 `;
 
   const extensionFolder = join(outDir, extension);

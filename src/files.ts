@@ -18,7 +18,7 @@ async function newFile(editor: monaco.editor.IStandaloneCodeEditor) {
   );
   const newTab = new Tab(editor, model);
   newTab.displayName = `Untitled-${untitledCounter++}`;
-  newTab.insert(activeTab.current !== null ? activeTab.current + 1 : 0);
+  newTab.insert(activeTab.value !== null ? activeTab.value + 1 : 0);
   editor.setModel(model);
   return model;
 }
@@ -54,7 +54,7 @@ async function openFile(
 
   uriToFileMap.set(model.uri.toString(), fileHandle);
   const newTab = new Tab(editor, model, fileHandle);
-  newTab.insert(activeTab.current !== null ? activeTab.current + 1 : 0);
+  newTab.insert(activeTab.value !== null ? activeTab.value + 1 : 0);
   editor.setModel(model);
   return model;
 }
@@ -74,6 +74,10 @@ async function saveFile(editor: monaco.editor.IStandaloneCodeEditor) {
   const writable = await fileHandle.createWritable();
   await writable.write(model.getValue());
   await writable.close();
+
+  const correspondingTab = tabs.findIndex((tab) => tab.model === model);
+  if (correspondingTab === -1) return;
+  tabs[correspondingTab].saved.value = true;
 }
 
 async function saveFileAs(editor: monaco.editor.IStandaloneCodeEditor) {
