@@ -1,19 +1,36 @@
 import degit from 'degit';
 import { join } from 'node:path';
 import { cp, mkdtemp, rm, readdir, mkdir } from 'node:fs/promises';
+import { rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
-let firstMessage = true;
+const perf = performance.now();
+
+let lastMessage: string | null = null;
 
 function status(message: string) {
-  process.stdout.write((firstMessage ? '' : '\r\x1b[K') + message);
-  firstMessage = false;
+  if (!lastMessage) {
+    process.stdout.write(message);
+    lastMessage = message;
+    return;
+  }
+
+  const numLines = Math.ceil(lastMessage.length / process.stdout.columns!);
+  const prefix = '\r\x1b[K' + '\x1b[1A\r\x1b[K'.repeat(numLines - 1);
+  process.stdout.write(prefix + message);
+  lastMessage = message;
 }
 
-const tmpDir = await mkdtemp(join(tmpdir(), 'vscode-install'));
-status(`Cloning vscode to temporary directory: ${tmpDir}`);
+const tmpDir = await mkdtemp(join(tmpdir(), 'vscode-install-'));
+status(`Cloning vscode to temporary directory: ${tmpDir}...`);
 
-await Bun.$`git clone --depth 1 https://github.com/microsoft/vscode.git ${tmpDir}`;
+process.on('SIGINT', () => {
+  console.log('\n\x1b[1;31mPostinstall interrupted by user\x1b[0m');
+  rmSync(tmpDir, { recursive: true, force: true });
+  process.exit(0);
+});
+
+await Bun.$`git clone --depth 1 https://github.com/microsoft/vscode.git ${tmpDir}`.quiet();
 const extensionsDir = join(import.meta.dir, '../src/language-support/basic-languages');
 await rm(extensionsDir, { recursive: true, force: true });
 await mkdir(extensionsDir, { recursive: true });
@@ -42,9 +59,9 @@ try {
   console.error('An error occurred:', error);
 }
 
-status('Cleaning up temporary directory...');
+process.stdout.write('Cleaning up temporary directory...');
 await rm(tmpDir, { recursive: true, force: true });
-status('Copying extra languages...');
+process.stdout.write(' Done.\nCopying extra languages...');
 
 const extraLanguagesDir = join(extensionsDir, '../extra-basic-languages');
 
@@ -53,3 +70,11 @@ await readdir(extraLanguagesDir)
     extras.map((f) => cp(join(extraLanguagesDir, f), join(extensionsDir, f), { recursive: true }))
   )
   .then((promises) => Promise.all(promises));
+
+process.stdout.write(' Done.\nGenerating web manifest...');
+await import('./generate-webmanifest.ts');
+process.stdout.write(' Done.\n\n');
+
+console.log(
+  `\x1b[1;32mLanguage download completed in ${((performance.now() - perf) / 1000).toFixed(2)}s\x1b[0m`
+);

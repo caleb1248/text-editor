@@ -101,8 +101,6 @@ registerContributions(contributes, "${extension}");
   console.log(`Processed ${extension} in ${(performance.now() - perf).toFixed(2)} ms`);
 }
 
-console.log(`\nAll extensions compiled in ${(performance.now() - overallPerf).toFixed(2)}ms`);
-
 const extensionsDir = join(import.meta.dir, '../src/language-support/basic-languages');
 const entryPointFile = Bun.file(join(import.meta.dir, '../src/language-support/main.ts'));
 const languageDirs = await readdir(extensionsDir);
@@ -119,3 +117,7 @@ import './language-features/html/monaco.contribution';
 import './language-features/css/monaco.contribution';
 import './language-features/json/monaco.contribution';`;
 await entryPointFile.write(entryPointContent);
+
+console.log(
+  `\n\x1b[1;32mAll extensions compiled in ${(performance.now() - overallPerf).toFixed(2)}ms\x1b[0m\n`
+);
